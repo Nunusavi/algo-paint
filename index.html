@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>AlgoPaint Pathfinding Visualizer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-gray-100 text-gray-800 font-sans flex flex-col items-center min-h-screen p-4">
+
+  <h1 class="my-4 text-3xl md:text-4xl text-center">AlgoPaint – Pathfinding Visualizer</h1>
+
+  <div class="w-full max-w-7xl flex-1 flex flex-col md:flex-row gap-4 md:gap-8">
+
+    <!-- Mobile Floating Header -->
+    <div id="mobile-header" class="md:hidden panel-blueprint p-2 sticky top-2 z-10">
+      <button id="toggle-controls" class="w-full text-center font-bold py-2">Show Controls & Stats</button>
+      <div id="mobile-controls-stats" class="hidden flex-col gap-4 pt-2">
+        <!-- Controls and Stats will be injected here by JS -->
+      </div>
+    </div>
+
+    <!-- Controls Panel (Left - Desktop) -->
+    <div id="controls-container" class="hidden md:flex panel-blueprint flex-col gap-3 w-full md:w-64">
+      <h2 class="text-xl font-bold border-b border-blue-300 pb-2 mb-2">Controls</h2>
+      <div id="controls-content">
+        <div class="flex flex-row md:flex-col gap-3">
+          <button id="bfsBtn" class="flex-1 btn-blueprint-primary">BFS
+            (1)</button>
+          <button id="dfsBtn" class="flex-1 btn-blueprint-primary">DFS
+            (2)</button>
+          <button id="astarBtn" class="flex-1 btn-blueprint-primary">A*</button>
+        </div>
+        <div class="border-t border-blue-300 mt-3 pt-3 flex flex-row md:flex-col gap-3">
+          <button id="clearBtn" class="flex-1 btn-blueprint-secondary">Clear
+            Walls</button>
+          <button id="resetBtn" class="flex-1 btn-blueprint-danger">Reset</button>
+        </div>
+        <div class="border-t border-blue-300 mt-3 pt-3 flex flex-col gap-4">
+          <label class="flex flex-col items-start gap-2 text-sm">
+            <span>Grid Size</span>
+            <div class="flex items-center flex-col gap-2 w-full">
+              <input type="range" id="gridRange" min="10" max="60" value="30" class="w-full">
+              <span id="gridLabel" class="w-16 text-center font-mono bg-white/50 rounded p-1"></span>
+            </div>
+          </label>
+          <label class="flex flex-col items-start gap-2 text-sm">
+            <span>Speed</span>
+            <input type="range" id="speed" min="0" max="200" value="30" class="w-full">
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Canvas (Center) -->
+    <div id="canvas-container" class="flex-1 flex items-center justify-center min-h-0">
+      <div class="w-full h-full" style="aspect-ratio: 1/1; max-width: calc(100vh - 200px);">
+        <canvas id="canvas" class="rounded-lg shadow-inner bg-white"></canvas>
+      </div>
+    </div>
+
+    <!-- Stats Panel (Right - Desktop) -->
+    <div id="stats-container" class="hidden md:flex panel-blueprint flex-col gap-4 w-full md:w-64">
+      <h2 class="text-xl font-bold border-b border-blue-300 pb-2 mb-2">Statistics</h2>
+      <div id="stats-content">
+        <div class="flex-1 flex justify-between items-center md:flex-col md:items-start md:gap-1">
+          <span class="text-gray-500">Explored:</span>
+          <span id="statNodes" class="font-mono text-xl md:text-2xl text-blue-600">0</span>
+        </div>
+        <div class="flex-1 flex justify-between items-center md:flex-col md:items-start md:gap-2 mt-2">
+          <span class="text-gray-500">Path Length:</span>
+          <span id="statPath" class="font-mono text-xl md:text-2xl text-blue-600">0</span>
+        </div>
+        <div class="flex-1 flex justify-between items-center md:flex-col md:items-start md:gap-2 mt-2">
+          <span class="text-gray-500">Runtime (ms):</span>
+          <span id="statTime" class="font-mono text-xl md:text-2xl text-blue-600">0</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- How It Works Section -->
+  <div class="w-full max-w-7xl panel-blueprint mt-8 p-6">
+    <h2 class="text-2xl font-bold border-b border-blue-300 pb-2 mb-4">How It Works</h2>
+    <div class="grid md:grid-cols-2 gap-6 text-gray-700">
+      <div>
+        <h3 class="font-bold text-lg mb-2 text-blue-800">Nodes</h3>
+        <ul class="list-disc list-inside space-y-2">
+          <li><span class="font-bold text-green-600">Start Node:</span> The green square is where the path begins.</li>
+          <li><span class="font-bold text-red-600">End Node:</span> The red square is the destination.</li>
+          <li><span class="font-bold text-gray-600">Walls:</span> Gray squares are obstacles. Click or drag on the grid
+            to add/remove them.</li>
+          <li>You can click and drag the start and end nodes to move them.</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-bold text-lg mb-2 text-blue-800">Controls</h3>
+        <ul class="list-disc list-inside space-y-2">
+          <li><span class="font-bold">BFS, DFS, A*:</span> Choose a pathfinding algorithm to visualize.</li>
+          <li><span class="font-bold">Clear Walls:</span> Removes all walls from the grid.</li>
+          <li><span class="font-bold">Reset:</span> Resets the entire grid, including algorithm visualizations.</li>
+          <li><span class="font-bold">Grid Size & Speed:</span> Adjust the grid dimensions and animation speed with the
+            sliders.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

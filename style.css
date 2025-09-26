@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .panel-blueprint {
+        @apply bg-blue-50 border border-blue-200 rounded-lg shadow-md p-4;
+    }
+
+    .btn-blueprint-primary {
+        @apply flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md shadow-sm transition-all duration-200 text-center md:text-left border-b-4 border-blue-700 active:border-b-0 hover:translate-y-px active:translate-y-1;
+    }
+
+    .btn-blueprint-secondary {
+        @apply flex-1 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-md shadow-sm transition-all duration-200 text-center md:text-left border-b-4 border-gray-700 active:border-b-0 hover:translate-y-px active:translate-y-1;
+    }
+
+    .btn-blueprint-danger {
+        @apply flex-1 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-md shadow-sm transition-all duration-200 text-center md:text-left border-b-4 border-red-700 active:border-b-0 hover:translate-y-px active:translate-y-1;
+    }
+}
+
+h1 {
+    @apply text-3xl md:text-4xl font-bold text-blue-800;
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    background: #dbeafe;
+    height: 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid #bfdbfe;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    margin-top: -5px;
+    background-color: #3b82f6;
+    height: 1.75rem;
+    width: 1rem;
+    border-radius: 0.25rem;
+    border: 2px solid #1d4ed8;
+}
+
+input[type="range"]::-moz-range-track {
+    background: #dbeafe;
+    height: 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid #bfdbfe;
+}
+
+input[type="range"]::-moz-range-thumb {
+    background-color: #3b82f6;
+    height: 1.75rem;
+    width: 1rem;
+    border-radius: 0.25rem;
+    border: 2px solid #1d4ed8;
+}
