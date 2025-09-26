@@ -42,7 +42,7 @@ These techniques make AlgoPaint a great reference for learning and demonstrating
 
 ## 🕹️ How to Use
 
-1.  Goto `github.nunusavi.io/ALGO-PAINT` in any browser.
+1.  Goto `github.nunusavi.io/algo-paint` in any browser.
 2.  **Set Points**:
     -   The **green** block is your start point.
     -   The **red** block is your end point.
