@@ -45,6 +45,10 @@
         makeGrid();
     }
 
+    function updateGridLabel() {
+        gridLabel.textContent = `${COLS} x ${Math.max(10, Math.round(COLS * (canvas.height / canvas.width)))}`;
+    }
+
     function makeGrid() {
         ROWS = Math.max(10, Math.round(COLS * (canvas.height / canvas.width)));
         CELL = Math.floor(canvas.width / COLS);
@@ -211,7 +215,7 @@
     document.getElementById('clearBtn').onclick = () => { if (!animRunning) clearWalls(); };
     document.getElementById('resetBtn').onclick = () => { if (!animRunning) resetAll(); };
 
-    gridRange.addEventListener('input', () => { COLS = parseInt(gridRange.value); gridLabel.textContent = `${COLS} x ${Math.max(10, Math.round(COLS * (canvas.height / canvas.width)))}`; makeGrid(); });
+    gridRange.addEventListener('input', () => { COLS = parseInt(gridRange.value); makeGrid(); updateGridLabel(); });
 
     window.addEventListener('keydown', e => { if (e.key === '1') runBFS(); if (e.key === '2') runDFS(); if (e.key === '3') runAstar(); });
 
@@ -219,4 +223,6 @@
 
     setupMobile();
     resizeCanvas();
+    // ensure the grid label is populated after initial layout
+    updateGridLabel();
 })();

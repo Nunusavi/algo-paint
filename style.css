@@ -18,6 +18,22 @@
     .btn-blueprint-danger {
         @apply flex-1 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-md shadow-sm transition-all duration-200 text-center md:text-left border-b-4 border-red-700 active:border-b-0 hover:translate-y-px active:translate-y-1;
     }
+
+    .algo-btn {
+        @apply bg-white/80 border border-blue-200 rounded-md py-2 px-3 flex items-center justify-center gap-2 font-semibold text-blue-800 hover:bg-white hover:shadow-sm transition-shadow relative;
+    }
+
+    .kbd {
+        @apply inline-block bg-gray-100 border border-gray-300 rounded px-2 py-0.5 text-xs font-mono text-gray-700 mx-0.5;
+    }
+
+    .kbd-badge {
+        @apply ml-auto bg-blue-100 text-blue-800 font-mono text-xs px-2 py-0.5 rounded-full border border-blue-200;
+    }
+
+    .stat-card {
+        @apply bg-white/70 border border-blue-100 rounded-lg p-2 shadow-sm;
+    }
 }
 
 h1 {
@@ -62,4 +78,26 @@ input[type="range"]::-moz-range-thumb {
     width: 1rem;
     border-radius: 0.25rem;
     border: 2px solid #1d4ed8;
+}
+
+/* Responsive grid tweaks */
+@media (min-width: 768px) {
+
+    /* keep a comfortable gap and ensure the canvas scales nicely */
+    .canvas-aspect {
+        max-width: calc(100vw - 560px);
+    }
+}
+
+@media (max-width: 767px) {
+    .canvas-aspect {
+        max-width: 100%;
+    }
+}
+
+/* Canvas helper to avoid inline styles */
+.canvas-aspect {
+    aspect-ratio: 1 / 1;
+    max-width: calc(100vh - 200px - 32px);
+    /* 200px for header and controls, 32px for padding */
 }

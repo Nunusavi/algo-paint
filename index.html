@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AlgoPaint Pathfinding Visualizer</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="style.css">
@@ -10,9 +11,12 @@
 
 <body class="bg-gray-100 text-gray-800 font-sans flex flex-col items-center min-h-screen p-4">
 
-  <h1 class="my-4 text-3xl md:text-4xl text-center">AlgoPaint – Pathfinding Visualizer</h1>
+  <div class="pb-6 font-mono w-full max-w-4xl">
+    <h1 class="my-4 text-3xl md:text-4xl text-center">AlgoPaint – Pathfinding Visualizer (Educational purpose) </h1>
+  </div>
 
-  <div class="w-full max-w-7xl flex-1 flex flex-col md:flex-row gap-4 md:gap-8">
+  <div
+    class="w-full max-w-full flex-1 grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-1 items-start px-4 md:px-6 lg:px-8">
 
     <!-- Mobile Floating Header -->
     <div id="mobile-header" class="md:hidden panel-blueprint p-2 sticky top-2 z-10">
@@ -21,69 +25,127 @@
         <!-- Controls and Stats will be injected here by JS -->
       </div>
     </div>
+    <!-- How It Works (second-largest column on desktop; hidden on mobile because there's a mobile section below) -->
+    <div id="howto-grid" class="hidden md:block panel-blueprint md:col-span-3">
+      <h2 class="text-xl font-bold border-b border-blue-300 pb-2 mb-2">How It Works</h2>
+      <div class="text-sm text-gray-700">
+        <h3 class="font-bold text-blue-800 mb-1">Nodes</h3>
+        <ul class="list-disc list-inside space-y-1 mb-3">
+          <li><span class="font-bold text-green-600">Start:</span> Green square — path begins.</li>
+          <li><span class="font-bold text-red-600">End:</span> Red square — destination.</li>
+          <li><span class="font-bold text-gray-600">Walls:</span> Gray = obstacles. Click/drag to toggle.</li>
+          <li>You can click &amp; drag the start and end nodes to move them.</li>
+        </ul>
+        <h3 class="font-bold text-blue-800 mb-1">Controls</h3>
+        <ul class="list-disc list-inside space-y-1">
+          <li><span class="font-bold">BFS / DFS / A*</span> — Pick an algorithm to visualize.</li>
+          <li><span class="font-bold">Clear Walls</span> — Remove obstacles.</li>
+          <li><span class="font-bold">Reset</span> — Clears the grid and visualizations.</li>
+          <li><span class="font-bold">Grid Size &amp; Speed</span> — Adjust with the sliders.</li>
+        </ul>
+      </div>
+    </div>
 
-    <!-- Controls Panel (Left - Desktop) -->
-    <div id="controls-container" class="hidden md:flex panel-blueprint flex-col gap-3 w-full md:w-64">
+    <!-- Canvas (largest column) -->
+    <div id="canvas-container" class="flex-1 flex items-center justify-center min-h-0 md:col-span-6">
+      <div class="w-full h-full canvas-aspect">
+        <canvas id="canvas" class="rounded-lg bg-gray-100"></canvas>
+      </div>
+    </div>
+    <!-- Controls + Statistics Panel (small column on desktop) -->
+    <div id="controls-container" class="hidden md:flex panel-blueprint flex-col gap-3 md:col-span-2">
       <h2 class="text-xl font-bold border-b border-blue-300 pb-2 mb-2">Controls</h2>
       <div id="controls-content">
-        <div class="flex flex-row md:flex-col gap-3">
-          <button id="bfsBtn" class="flex-1 btn-blueprint-primary">BFS
-            (1)</button>
-          <button id="dfsBtn" class="flex-1 btn-blueprint-primary">DFS
-            (2)</button>
-          <button id="astarBtn" class="flex-1 btn-blueprint-primary">A*</button>
+        <div class="controls-header">
+          <div class="flex items-center justify-between mb-2">
+            <div class="text-sm text-gray-600 font-semibold">Algorithms</div>
+            <div class="text-xs text-gray-500">Hotkeys: <span class="kbd">1</span>, <span class="kbd">2</span>, <span
+                class="kbd">3</span></div>
+          </div>
+
+          <div class="flex gap-2">
+            <button id="bfsBtn" class="algo-btn p-2 rounded-md hover:bg-gray-300 flex-1" title="Breadth-first search (1)">
+              <span class="ml-2">BFS</span>
+              <span class="kbd-badge">1</span>
+            </button>
+            <button id="dfsBtn" class="algo-btn p-2 rounded-md hover:bg-gray-300 flex-1" title="Depth-first search (2)">
+              <span class="ml-2">DFS</span>
+              <span class="kbd-badge">2</span>
+            </button>
+            <button id="astarBtn" class="algo-btn p-2 rounded-md hover:bg-gray-300 flex-1" title="A* search (3)">
+              <span class="ml-2">A*</span>
+              <span class="kbd-badge">3</span>
+            </button>
+          </div>
         </div>
-        <div class="border-t border-blue-300 mt-3 pt-3 flex flex-row md:flex-col gap-3">
-          <button id="clearBtn" class="flex-1 btn-blueprint-secondary">Clear
-            Walls</button>
-          <button id="resetBtn" class="flex-1 btn-blueprint-danger">Reset</button>
+
+        <div class="mt-4 flex gap-2">
+          <button id="clearBtn" class="btn-blueprint-secondary rounded-md hover:bg-gray-200 flex-1">Clear Walls</button>
+          <button id="resetBtn" class="btn-blueprint-danger p-4 rounded-md hover:bg-gray-200 flex-1">Reset</button>
         </div>
-        <div class="border-t border-blue-300 mt-3 pt-3 flex flex-col gap-4">
-          <label class="flex flex-col items-start gap-2 text-sm">
-            <span>Grid Size</span>
-            <div class="flex items-center flex-col gap-2 w-full">
-              <input type="range" id="gridRange" min="10" max="60" value="30" class="w-full">
-              <span id="gridLabel" class="w-16 text-center font-mono bg-white/50 rounded p-1"></span>
+
+        <div class="mt-4 grid gap-3">
+          <label class="flex flex-col gap-2 text-sm">
+            <span class="text-gray-600 font-medium">Grid Size</span>
+            <input type="range" id="gridRange" min="10" max="60" value="30" class="w-full">
+            <div class="flex items-center justify-between">
+              <span id="gridLabel" class="w-28 text-center font-mono bg-white/60 rounded p-1 text-sm"></span>
+              <small class="text-xs text-gray-500">Adjust number of columns</small>
             </div>
           </label>
-          <label class="flex flex-col items-start gap-2 text-sm">
-            <span>Speed</span>
+
+          <label class="flex flex-col gap-2 text-sm">
+            <span class="text-gray-600 font-medium">Speed</span>
             <input type="range" id="speed" min="0" max="200" value="30" class="w-full">
+            <div class="text-xs text-gray-500">Lower value => faster animation</div>
           </label>
         </div>
       </div>
-    </div>
 
-    <!-- Canvas (Center) -->
-    <div id="canvas-container" class="flex-1 flex items-center justify-center min-h-0">
-      <div class="w-full h-full" style="aspect-ratio: 1/1; max-width: calc(100vh - 200px);">
-        <canvas id="canvas" class="rounded-lg shadow-inner bg-white"></canvas>
+      <!-- Statistics moved into the same panel -->
+      <h2 class="text-xl font-bold border-b border-blue-300 pb-2 mb-2 mt-3">Statistics</h2>
+      <div id="stats-content" class="grid gap-3">
+        <div class="stat-card flex items-center gap-3">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="9" stroke="#60a5fa" stroke-width="1.5" />
+            <path d="M8 12h8" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+          <div class="flex-1">
+            <div class="text-xs text-gray-500">Explored</div>
+            <div id="statNodes" class="font-mono text-xl text-blue-600">0</div>
+          </div>
+        </div>
+
+        <div class="stat-card flex items-center gap-3">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M4 12h16" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round" />
+            <path d="M12 4v16" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+          <div class="flex-1">
+            <div class="text-xs text-gray-500">Path Length</div>
+            <div id="statPath" class="font-mono text-xl text-blue-600">0</div>
+          </div>
+        </div>
+
+        <div class="stat-card flex items-center gap-3">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="9" stroke="#60a5fa" stroke-width="1.5" />
+            <path d="M12 8v5l3 2" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <div class="flex-1">
+            <div class="text-xs text-gray-500">Runtime (ms)</div>
+            <div id="statTime" class="font-mono text-xl text-blue-600">0</div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Stats Panel (Right - Desktop) -->
-    <div id="stats-container" class="hidden md:flex panel-blueprint flex-col gap-4 w-full md:w-64">
-      <h2 class="text-xl font-bold border-b border-blue-300 pb-2 mb-2">Statistics</h2>
-      <div id="stats-content">
-        <div class="flex-1 flex justify-between items-center md:flex-col md:items-start md:gap-1">
-          <span class="text-gray-500">Explored:</span>
-          <span id="statNodes" class="font-mono text-xl md:text-2xl text-blue-600">0</span>
-        </div>
-        <div class="flex-1 flex justify-between items-center md:flex-col md:items-start md:gap-2 mt-2">
-          <span class="text-gray-500">Path Length:</span>
-          <span id="statPath" class="font-mono text-xl md:text-2xl text-blue-600">0</span>
-        </div>
-        <div class="flex-1 flex justify-between items-center md:flex-col md:items-start md:gap-2 mt-2">
-          <span class="text-gray-500">Runtime (ms):</span>
-          <span id="statTime" class="font-mono text-xl md:text-2xl text-blue-600">0</span>
-        </div>
-      </div>
-    </div>
+    <!-- stats moved into controls panel above -->
 
   </div>
 
-  <!-- How It Works Section -->
-  <div class="w-full max-w-7xl panel-blueprint mt-8 p-6">
+  <!-- How It Works Section (mobile) -->
+  <div class="w-full panel-blueprint mt-8 p-6 block md:hidden">
     <h2 class="text-2xl font-bold border-b border-blue-300 pb-2 mb-4">How It Works</h2>
     <div class="grid md:grid-cols-2 gap-6 text-gray-700">
       <div>
@@ -109,6 +171,12 @@
     </div>
   </div>
 
+  <footer class="w-full max-w-4xl text-center text-gray-900">
+    <hr class="w-full border-blue-200">
+    <p>
+      &copy; 2024 <a href="https://nate.et" target="_blank" class="text-blue-600 hover:none">Nathan Mesfin</a>
+    </p>
+  </footer>
   <script src="script.js"></script>
 </body>
 
