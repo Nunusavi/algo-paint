@@ -12,6 +12,8 @@ AlgoPaint is an interactive playground for exploring classic pathfinding algorit
 
 It’s designed to impress interviewers and showcase your ability to implement core CS concepts with clean code and thoughtful design.
 
+<img width="1920" height="957" alt="Demo of the Project" src="https://github.com/user-attachments/assets/3b34dc44-14ab-46b7-a6f1-eee4705102df" />
+
 ## 🚀 Features
 
 -   **Interactive Grid**: Click and drag to place start, end, and wall cells.
